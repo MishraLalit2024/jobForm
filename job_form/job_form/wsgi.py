@@ -1,5 +1,5 @@
 """
-WSGI config for Job_App project.
+WSGI config for job_form project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Job_App.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'job_form.settings')
 
 application = get_wsgi_application()
