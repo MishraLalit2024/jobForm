@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect, HttpResponse
 from .form import EmployeesForm
-from django.contrib import messages
 
 # Create your views here.
 
@@ -24,7 +23,3 @@ def registerUser(request):
             return HttpResponse('Success')
     else:
         return HttpResponse('Lose!')
-
-
-def loginfunc(request):
-    return HttpResponse('hello')

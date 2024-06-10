@@ -1,15 +1,9 @@
 from django import forms
 from .models import Employees
-from django.contrib.auth.forms import UserCreationForm
 
 
 class EmployeesForm(forms.ModelForm):
-    """Form definition for Employees."""
-    # phone = forms.TextInput(required=True)
-
     class Meta:
-        """Meta definition for Employeesform."""
-
         model = Employees
         fields = ['first_name', 'last_name', 'phone', 'email',
                   'password', 'is_superuser']
