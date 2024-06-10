@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from register import urls
 from login import urls as login_urls
+from application_from import urls as forms
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(login_urls)),
-    path('register/', include(urls))
+    path('register/', include(urls)),
+    path('form', include(forms))
 ]
