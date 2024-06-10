@@ -15,19 +15,15 @@ def createForm(request):
 
 def registerUser(request):
     if request.method == 'POST':
+        print('Reached Here.')
         form = EmployeesForm(request.POST)
-        # print(request.POST)
-        # print(form.fields.keys)
-        # print(form.fields.values)
-        # print(form.is_valid())
-        # if form.is_valid():
-        print(form)
-        form.save()
-        username = form.cleaned_data.get('username')
-        messages.success(request, f'Account created for {username}!')
-        return HttpResponse('Success')
-    # else:
-        # return HttpResponse('Lose!')
+        if form.is_valid():
+            instance = form.save()
+            instance.set_password(form.cleaned_data.get('password'))
+            instance.save()
+            return HttpResponse('Success')
+    else:
+        return HttpResponse('Lose!')
 
 
 def loginfunc(request):
