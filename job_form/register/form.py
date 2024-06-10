@@ -30,4 +30,4 @@ class EmployeesForm(forms.ModelForm):
             'email': forms.EmailInput(
             attrs={'class': 'w-25 form-control', 'placeholder': 'Email Address'}),
             'is_superuser': forms.CheckboxInput(
-            attrs={'class': 'checkbox mx-4'})}
+            attrs={'class': 'form-check-input mx-4'})}
