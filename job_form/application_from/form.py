@@ -1,5 +1,9 @@
 from django import forms
-from .models import *
+from .models import Language, TechDetail, Technology
+from .models import RelationStatus, Gender, PreferedLocation
+from .models import Designation, Department, BasicDetail, UserPreferedLocation
+from .models import EducationDetail, ExperienceDetail, LanguageDetail
+from .models import LanguageOption, TechOption, Reference, Preference
 
 
 optionfields = ["name", "value"]
@@ -53,7 +57,7 @@ class BasicDetailForm(forms.ModelForm):
         fields = [
             "first_name",
             "last_name",
-            "designation",
+            "new_designation",
             "address1",
             "address2",
             "email",
@@ -68,7 +72,7 @@ class BasicDetailForm(forms.ModelForm):
         labels = {
             "first_name": "First Name: ",
             "last_name": "Last Name: ",
-            "designation": "Designation: ",
+            "new_designation": "Designation: ",
             "address1": "Current Address: ",
             "address2": "Permanent Address: ",
             "email": "Email-Address: ",
@@ -81,46 +85,52 @@ class BasicDetailForm(forms.ModelForm):
             "date_of_birth": "Date of Birth: ",
         }
         widgets = {
-            "designation": forms.Select(),
-            "gender": forms.Select(),
-            "rel_status": forms.Select(),
             "address1": forms.Textarea(attrs={"rows": 2}),
             "address2": forms.Textarea(attrs={"rows": 2}),
-            "date_of_birth": forms.DateInput(format=('%d/%m/%Y'), attrs={"type": "date"})
+            "date_of_birth": forms.DateInput(
+                format=("%d/%m/%Y"), attrs={"type": "date"}
+            ),
+            "gender": forms.Select(),
         }
 
 
 class EducationDetailForm(forms.ModelForm):
     class Meta:
         model = EducationDetail
-        fields = ["course", "board", "institute", "passing_year", "score"]
+        fields = ["courses", "boards", "institutes", "passing_year", "scores"]
         labels = {
-            "course": "Course: ",
-            "board": "University/Board Name: ",
-            "institute": "College/School Name: ",
+            "courses": "Course: ",
+            "boards": "University/Board Name: ",
+            "institutes": "College/School Name: ",
             "passing_year": "Year of Passing: ",
-            "score": "Result (in %)",
+            "scores": "Result (in %): ",
         }
-        widgets = {"passing_year": forms.TextInput()}
+        widgets = {
+            "passing_year": forms.TextInput(attrs={"name": "pyear"}),
+            "boards": forms.TextInput(attrs={"name": "board"}),
+            "institutes": forms.TextInput(attrs={"name": "institute"}),
+            "courses": forms.Select(attrs={"name": "course"}),
+            "scores": forms.TextInput(attrs={"name": "score"}),
+        }
 
 
 class ExperienceDetailForm(forms.ModelForm):
     class Meta:
         model = ExperienceDetail
-        fields = ["company", "designation", "from_date", "to_date"]
+        fields = ["companies", "designations", "from_dates", "to_dates"]
         labels = {
-            "company": "'Company's Name: ",
-            "designation": "Current Role: ",
-            "from_date": "Date of Joining: ",
-            "to_date": "Date of Leaving",
+            "companies": "Company's Name: ",
+            "designations": "Current Role: ",
+            "from_dates": "Date of Joining: ",
+            "to_dates": "Date of Leaving: ",
         }
         widgets = {
-            "from_date": forms.DateInput(format=("%d/%m/%Y"), attrs={"type": "date"}),
-            "to_date": forms.DateInput(format=("%d/%m/%Y"), attrs={"type": "date"}),
+            "from_dates": forms.DateInput(format=("%d/%m/%Y"), attrs={"type": "date"}),
+            "to_dates": forms.DateInput(format=("%d/%m/%Y"), attrs={"type": "date"}),
         }
 
 
-lang_opts = ['Read', 'Write', 'Speak']
+lang_opts = ["Read", "Write", "Speak"]
 
 
 class LanguageDetailForm(forms.ModelForm):
@@ -153,8 +163,8 @@ class ReferenceForm(forms.ModelForm):
         fields = ["name", "relation", "phone_number"]
         labels = {
             "name": "Name: ",
-            "relation": "Relation",
-            "phone_number": "Phone Number"
+            "relation": "Relation: ",
+            "phone_number": "Phone Number: ",
         }
 
 
@@ -166,18 +176,26 @@ class PreferenceForm(forms.ModelForm):
             "notice_period": "Notice Period: ",
             "expected_CTC": "Expected CTC: ",
             "current_CTC": "Current CTC: ",
-            "department": "Department: "
+            "department": "Department: ",
         }
         widgets = {
-            "notice_period": forms.NumberInput(attrs={
-                "min": 0,
-                "max": 12
-            }),
-            "department": forms.Select()
+            "notice_period": forms.NumberInput(attrs={"min": 0, "max": 12}),
+            "department": forms.Select(),
         }
+
+
+pref_loc_choices = {}
+for data in PreferedLocation.objects.all():
+    pref_loc_choices[data.value] = data.name
 
 
 class UserPreferenceLocationForm(forms.ModelForm):
     class Meta:
         model = UserPreferedLocation
         fields = ["location"]
+        labels = {"location": "Locations: "}
+        widgets = {
+            "location": forms.SelectMultiple(
+                choices=pref_loc_choices, attrs={"multiple": True}
+            )
+        }

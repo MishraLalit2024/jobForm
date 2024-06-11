@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import *
+from .models import Language, TechDetail, Technology
+from .models import RelationStatus, Gender, PreferedLocation
+from .models import Designation, Department, BasicDetail, UserPreferedLocation
+from .models import EducationDetail, ExperienceDetail, LanguageDetail
+from .models import LanguageOption, TechOption, Reference, Preference
 
 # Register your models here.
 admin.site.register(Language)

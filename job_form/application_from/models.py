@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
@@ -42,6 +41,9 @@ class Gender(AbstractOption):
 
 
 class PreferedLocation(AbstractOption):
+    class Meta:
+        verbose_name = __name__
+
     pass
 
 
@@ -70,44 +72,60 @@ for i in relstatus_choices:
 
 
 class BasicDetail(AbstractRecord):
-    first_name = models.CharField(max_length=255, blank=False)
-    last_name = models.CharField(max_length=255, blank=False)
-    designation = models.CharField(
-        max_length=50, choices=desg_obj, default=desg_obj['JDV'])
+    first_name = models.CharField("first-name", max_length=255, blank=False)
+    last_name = models.CharField("last-name", max_length=255, blank=False)
+    new_designation = models.CharField(
+        "new-designation", max_length=50, choices=desg_obj, default=desg_obj["JDV"]
+    )
     address1 = models.TextField(blank=False)
     address2 = models.TextField(blank=False)
     email = models.EmailField(unique=True, primary_key=True)
     phone = models.CharField(blank=False, unique=True, max_length=15)
-    city = models.CharField(max_length=50, blank=False, )
+    city = models.CharField(
+        max_length=50,
+        blank=False,
+    )
     state = models.CharField(max_length=50, blank=False)
     pincode = models.CharField(max_length=6, blank=False)
-    gender = models.CharField(
-        max_length=3, choices=gender_obj, default=gender_obj['M'])
+    gender = models.CharField(max_length=3, choices=gender_obj, default=gender_obj["M"])
     rel_status = models.CharField(
-        max_length=50, choices=relstatus_obj, default=relstatus_obj['SIN'])
-    date_of_birth = models.DateField(default='2001-01-01')
+        max_length=50, choices=relstatus_obj, default=relstatus_obj["SIN"]
+    )
+    date_of_birth = models.DateField(default="2001-01-01")
 
     class Meta:
-        verbose_name_plural = 'Basic Details'
+        verbose_name_plural = "Basic Details"
 
     def __str__(self):
-        return str(self.first_name+" "+self.last_name)
+        return str(self.first_name + " " + self.last_name)
+
+
+courses = {
+    "ssc": "SSC",
+    "hsc": "HSC",
+    "bac": "Bachelor's",
+    "mas": "Master's",
+    "doc": "Doctorate",
+}
 
 
 class EducationDetail(AbstractRecord):
-    course = models.CharField(max_length=50, blank=False)
-    board = models.CharField(max_length=50, blank=False)
-    institute = models.CharField(max_length=100)
+    courses = models.CharField("courses", max_length=50, blank=False, choices=courses)
+    boards = models.CharField("boards", max_length=50, blank=False)
+    institutes = models.CharField("institutes", max_length=100)
     passing_year = models.PositiveIntegerField(
-        default=2000, validators=[MinValueValidator(2000), MaxValueValidator(2025)])
-    score = models.FloatField()
+        "pyear",
+        default=2000,
+        validators=[MinValueValidator(2000), MaxValueValidator(2025)],
+    )
+    scores = models.FloatField()
 
 
 class ExperienceDetail(AbstractRecord):
-    company = models.CharField(max_length=100)
-    designation = models.CharField(max_length=50)
-    from_date = models.DateField(default='2001-01-01')
-    to_date = models.DateField(default='2001-01-01')
+    companies = models.CharField(max_length=100)
+    designations = models.CharField(max_length=50)
+    from_dates = models.DateField(default="2001-01-01")
+    to_dates = models.DateField(default="2001-01-01")
 
 
 class LanguageDetail(AbstractRecord):
@@ -142,7 +160,7 @@ class Preference(AbstractRecord):
 
 
 class UserPreferedLocation(AbstractRecord):
-    location = models.CharField(max_length=3)
+    location = models.ManyToManyField(PreferedLocation)
 
 
 class LanguageOption(AbstractOption):
