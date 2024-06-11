@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
@@ -52,31 +53,38 @@ class Department(AbstractOption):
     pass
 
 
-class State(AbstractOption):
-    pass
+designation_choices = Designation.objects.all()
+gender_choices = Gender.objects.all()
+relstatus_choices = RelationStatus.objects.all()
+desg_obj = {}
+gender_obj = {}
+relstatus_obj = {}
 
-
-class City(AbstractOption):
-    pass
-
-
-class Course(AbstractOption):
-    pass
+for i in designation_choices:
+    desg_obj[i.value] = i.name
+for i in gender_choices:
+    gender_obj[i.value] = i.name
+for i in relstatus_choices:
+    relstatus_obj[i.value] = i.name
+# print(gender_obj['NON'])
 
 
 class BasicDetail(AbstractRecord):
     first_name = models.CharField(max_length=255, blank=False)
     last_name = models.CharField(max_length=255, blank=False)
-    designation = models.CharField(max_length=3, null=True)
+    designation = models.CharField(
+        max_length=50, choices=desg_obj, default=desg_obj['JDV'])
     address1 = models.TextField(blank=False)
     address2 = models.TextField(blank=False)
     email = models.EmailField(unique=True, primary_key=True)
     phone = models.CharField(blank=False, unique=True, max_length=15)
-    city = models.CharField(max_length=3, blank=False)
-    state = models.CharField(max_length=3, blank=False)
+    city = models.CharField(max_length=50, blank=False, )
+    state = models.CharField(max_length=50, blank=False)
     pincode = models.CharField(max_length=6, blank=False)
-    gender = models.CharField(max_length=3, null=True)
-    rel_status = models.CharField(max_length=3)
+    gender = models.CharField(
+        max_length=3, choices=gender_obj, default=gender_obj['M'])
+    rel_status = models.CharField(
+        max_length=50, choices=relstatus_obj, default=relstatus_obj['SIN'])
     date_of_birth = models.DateField(default='2001-01-01')
 
     class Meta:
@@ -87,10 +95,11 @@ class BasicDetail(AbstractRecord):
 
 
 class EducationDetail(AbstractRecord):
-    course = models.CharField(max_length=3, blank=False)
+    course = models.CharField(max_length=50, blank=False)
     board = models.CharField(max_length=50, blank=False)
     institute = models.CharField(max_length=100)
-    passing_year = models.DateField(default='2001-01-01')
+    passing_year = models.PositiveIntegerField(
+        default=2000, validators=[MinValueValidator(2000), MaxValueValidator(2025)])
     score = models.FloatField()
 
 
@@ -119,11 +128,17 @@ class Reference(AbstractRecord):
     phone_number = models.CharField(max_length=15)
 
 
+dept = Department.objects.all()
+dept_choices = {}
+for i in dept:
+    dept_choices[i.value] = i.name
+
+
 class Preference(AbstractRecord):
     notice_period = models.IntegerField()
     expected_CTC = models.FloatField()
     current_CTC = models.FloatField()
-    department = models.CharField(max_length=3)
+    department = models.CharField(max_length=3, choices=dept_choices)
 
 
 class UserPreferedLocation(AbstractRecord):

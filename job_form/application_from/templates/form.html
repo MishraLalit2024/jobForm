@@ -4,44 +4,484 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Job Application Form</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      body{
+        padding: 0;
+        margin: 0;
+        position: relative;
+        min-height: 100vh;
+        }
+        header{
+            height: 96px;
+            font-weight: 400;
+            font-style: normal;
+            margin: 0;
+            padding: 1px 0 1px 16px;
+            background-color: rgb(245, 245, 245);
+        }
+        footer{
+            background-color: black;
+            color: white;
+            padding: 4px;
+            text-align: center;
+            margin-top: auto;
+
+        }
+        main{
+            height: 76dvh;
+            width: 100%;
+            background-color: rgb(255, 197, 121);
+        }
+        textarea{
+            resize: none;
+        }
+        .padNorm > *{
+            padding: 16px;
+        }
+        .center{
+            margin: auto 0;
+        }
+
+        .container{
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .basic-details > *{
+            padding: 16px;
+        }
+        .education-details > *{
+            padding: 16px;
+        }
+        .work-experience > *{
+            padding: 12px;
+        }
+        .language > *{
+            padding: 16px;
+        }
+        .tech > *{
+            padding: 16px;
+        } 
+        .refernces > *{
+            padding: 12px;
+        }
+        .preferences > *{
+            padding: 16px;
+        }
+        .bottom-buttons{
+            position: absolute;
+            right: 50px;
+            bottom: 56px
+        }
+        .bottom-buttons input{
+            padding: 16px;
+            margin: 0 16px;
+            font-size: 18px;
+        }
+        .form-title{
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
   </head>
   <body>
-    {{a}}
-    <br>
-    {{b}}
-    <br>
-    {{c}}
-    <br>
-    {{d}}
-    <br>
-    {{e}}
-    <br>
-    {{f}}
-    <br>
-    {{g}}
-    <br>
-    {{h}}
-    <br>
-    {{i}}
-    <br>
-    {{j}}
-    <br>
-    {{k}}
-    <br>
-    {{l}}
-    <br>
-    {{m}}
-    <br>
-    {{n}}
-    <br>
-    {{o}}
-    <br>
-    {{p}}
-    <br>
-    {{q}}
-    <br>
-    {{r}}
-    <br>
-    {{s}}
+    <main>
+      <form action="login/" method="POST">
+        {% csrf_token %}
+        <div class="basic-details" id="basic-details-div">
+          <div>
+            <p class="form-title">Basic Details: </p>
+          </div>
+          <div class="col-2">
+            <label for="fname">
+              {{k.first_name.label}}{{k.first_name}}
+            </label>
+            <label for="lname">
+              {{k.last_name.label}}{{k.last_name}}
+            </label>
+          </div>
+          <div class="col-2">
+            <label for="desig">
+              {{k.designation.label}}{{k.designation}}
+            </label>
+            <label for="relstatus">
+              {{k.rel_status.label}}{{k.rel_status}}
+            </label>
+          </div>
+          <div>
+            <label for="gender">
+              {{k.gender.label}}{{k.gender}}
+            </label>
+          </div>
+          <div class="d-flex"> 
+            <label for="add1">
+              {{k.address1.label}}{{k.address1}}
+            </label>
+            <label for="add2">
+              {{k.address2.label}}{{k.address2}}
+            </label>
+          </div>
+          <div>
+            <label for="state">
+              {{k.state.label}}{{k.state}}
+            </label>
+            <label for="city">
+              {{k.city.label}}{{k.city}}
+            </label>
+          </div>
+          <div>
+            <label for="email">
+              {{k.email.label}}{{k.email}}
+            </label>
+            <label for="phone">
+              {{k.phone.label}}{{k.phone}}
+            </label>
+          </div>
+          <div>
+            <label for="pin">
+              {{k.pincode.label}}{{k.pincode}}
+            </label>
+              <label for="dob">
+                {{k.date_of_birth.label}}{{k.date_of_birth}}
+              </label>
+            </div>
+            <div class="bottom-buttons">
+              <input type="button" value="Back" disabled />
+              <input type="button" value="Next" onclick="hide_basic(); show_edu()" />
+            </div>
+        </div>
+
+        <div class="education-details" id="edu-details-div" hidden>
+          <div>
+            <p class="form-title">Education Details: </p>
+          </div>
+          <div id="edu-control">
+            <input type="button" value="add" onclick="addedu()">
+            <input type="button" value="remove" onclick="remedu()">
+          </div>
+          <div id="fill-row" class="padNorm">
+            <div id="edu-row-0">
+              <label for="course">
+                {{l.course.label}}{{l.course}}
+              </label>
+              <label for="course">
+                {{l.board.label}}{{l.board}}
+              </label>
+              <label for="course">
+                {{l.institute.label}}{{l.institute}}
+              </label>
+              <label for="course">
+                {{l.passing_year.label}}{{l.passing_year}}
+              </label>
+              <label for="course">
+                {{l.score.label}}{{l.score}}
+              </label>
+            </div>
+          </div>
+          
+          <div class="bottom-buttons">
+            <input type="button" value="Back" onclick="hide_edu();show_basic()" />
+            <input type="button" value="Next" onclick="hide_edu();show_work_ex()" />
+          </div>
+        </div>
+
+        <div class="work-experience" id="work-exp-div" hidden>
+          <div>
+            <p class="form-title">Work Experience: </p>
+          </div>
+          <div id="work-ex-control">
+            <input type="button" value="add" onclick="addwork()">
+            <input type="button" value="remove" onclick="remwork()">
+          </div>
+          <div id="fill-work" class="padNorm">
+            <div id="work-row-0">
+              <label for="company-name">
+                {{exper.company.label}}{{exper.company}}
+                {{exper.designation.label}}{{exper.designation}}
+                {{exper.from_date.label}}{{exper.from_date}}
+                {{exper.to_date.label}}{{exper.to_date}}            
+              </label>
+            </div>
+          </div>
+          <div class="bottom-buttons">
+            <input type="button" value="Back" onclick="hide_work();show_edu()" />
+            <input type="button" value="Next" onclick="hide_work();show_lang()" />
+          </div>
+        </div>
+
+        <div class="language padNorm" id="lang-div" hidden>
+          <div>
+            <p class="form-title">Languages: </p>
+          </div>
+          {% for lang in languages %}
+            <div>
+              <label for="{{ lang.value }}">
+                <input type="checkbox" name="{{ lang.value }}" id="{{ lang.value }}" value="{{ lang.value }}"> {{lang.name}}
+                <br>
+                <input type="checkbox" name="{{ lang.value }}" id="read" value="R"> Read
+                <input type="checkbox" name="{{ lang.value }}" id="write" value="W"> Write
+                <input type="checkbox" name="{{ lang.value }}" id="speak" value="S"> Speak
+              </label>
+            </div>
+          {% endfor %}
+          
+          <div class="bottom-buttons">
+            <input type="button" value="Back" onclick="hide_lang();show_work_ex()" />
+            <input type="button" value="Next" onclick="hide_lang();show_tech()" />
+          </div>
+        </div>
+
+        <div class="tech padNorm" id="tech-div" hidden>
+          <div>
+            <p class="form-title">Technologies: </p>
+          </div>
+          {% for tech in techs %}
+            <div>
+              <label for="{{ tech.value }}">
+                <input type="checkbox" name="{{tech.name}}" value="php"> {{ tech.name }}
+                <br>
+                <input type="radio" name="{{ tech.value }}" id="beg" value="beg"> Beginner
+                <input type="radio" name="{{ tech.value }}" id="med" value="med"> Mediator
+                <input type="radio" name="{{ tech.value }}" id="exp" value="exp"> Expert
+              </label>
+            </div>
+          {% endfor %}
+          <div class="bottom-buttons">
+            <input type="button" value="Back" onclick="hide_tech();show_lang()" />
+            <input type="button" value="Next" onclick="hide_tech();show_ref()" />
+          </div>
+        </div>
+
+        <div class="refernces" id="ref-div" hidden>
+          <div>
+            <p class="form-title">References: </p>
+          </div>
+          <div id="ref-control">
+            <input type="button" value="Add reference" onclick="addref()">
+            <input type="button" value="Remove reference" onclick="remref()">
+          </div>
+          <div id="ref-row" class="padNorm">
+            <div id="ref-row-0">
+              <input type="hidden" name="srno" value="0">
+              <label for="ref-name">
+                {{r.name.label}}{{r.name}}
+              </label>
+              <label for="ref-num">
+                {{r.phone_number.label}}{{r.phone_number}}
+              </label>
+              <label for="ref-rel">
+                {{r.relation.label}}{{r.relation}}
+              </label>
+            </div>
+          </div>
+          <div class="bottom-buttons">
+            <input type="button" value="Back" onclick="hide_ref();show_tech()" />
+            <input type="button" value="Next" onclick="hide_ref();show_pref()" />
+          </div>
+        </div>
+
+        <div class="preferences" id="pref-div" hidden>
+          <div>
+            <p class="form-title">Preferences: </p>
+          </div>
+          <div>
+            <label for="pref-locn">Prefered Locations: </label>
+              <select name="pref-locn" multiple>
+                {% for locn in pref_loc %}
+                  <option>{{locn.name}}<optoin>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+              <label for="notice">
+                {{s.notice_period.label}}{{s.notice_period}}  
+                (fill the number of months between 0 and 12.)
+              </label>
+            </div>
+            <div>
+              <label for="expected">
+                {{s.expected_CTC.label}}{{s.expected_CTC}}
+              </label>
+              <label for="current">
+                {{s.current_CTC.label}}{{s.current_CTC}}
+              </label>
+              <label for="department">
+                {{s.department.label}}{{s.department}}
+              </label>
+            </div>
+            <div class="bottom-buttons">
+              <input type="button" value="Back" onclick="hide_pref();show_ref()" />
+              <input type="submit" value="Submit" id="submit" />
+          </div>
+        </div>
+
+      </form>
+    </main>
+
+
+
+    <script>
+      function show_basic(){
+        document.getElementById('basic-details-div').removeAttribute("hidden", "false");
+      }
+      function hide_basic(){
+        document.getElementById('basic-details-div').setAttribute("hidden", "true");
+      }
+
+      srno= 0;
+      function addedu(){
+        if(srno<0){
+          srno=0;
+        }
+        else if(srno>=5){
+          return 0;
+        }
+        srno++;
+        document.getElementById('fill-row').innerHTML += 
+                    `<div id="edu-row-${srno}">
+                      <label for="course">
+                          {{l.course.label}}{{l.course}}
+                      </label>
+                      <label for="course">
+                          {{l.board.label}}{{l.board}}
+                      </label>
+                      <label for="course">
+                          {{l.institute.label}}{{l.institute}}
+                      </label>
+                      <label for="course">
+                          {{l.passing_year.label}}{{l.passing_year}}
+                      </label>
+                      <label for="course">
+                          {{l.score.label}}{{l.score}}
+                      </label>
+                    </div>`; 
+      }
+      function remedu(){
+        if(srno>=1){
+          toDeleteNode = document.getElementById(`edu-row-${srno}`);
+          parentNode = document.getElementById('fill-row');
+          parentNode.removeChild(toDeleteNode);
+        }
+        srno--;
+      }
+      function show_edu(){
+        document.getElementById('edu-details-div').removeAttribute("hidden", "false");
+      }
+      function hide_edu(){
+        document.getElementById('edu-details-div').setAttribute("hidden", "true");
+      }
+      
+      wsrno = 0;
+      function addwork(){
+        if(wsrno<0){
+          wsrno = 0;
+        }
+        else if(wsrno>=5){
+          return 0;
+        }
+        wsrno++;
+        document.getElementById('fill-work').innerHTML +=
+                    `<div id="work-row-${wsrno}">
+                      <label for="course">
+                          {{exper.company.label}}{{exper.company}}
+                          {{exper.designation.label}}{{exper.designation}}
+                          {{exper.from_date.label}}{{exper.from_date}}
+                          {{exper.to_date.label}}{{exper.to_date}}
+                      <label for="company-name">
+                      </label>
+                    </div>`;
+      }
+      function remwork(){
+        if(wsrno>=1){
+          toDeleteNode = document.getElementById(`work-row-${wsrno}`);
+          parentNode = document.getElementById('fill-work');
+          parentNode.removeChild(toDeleteNode);
+        }
+        wsrno--;
+      }
+      function hide_work(){
+        document.getElementById('work-exp-div').setAttribute("hidden", "true");
+      }
+      function show_work_ex(){
+        document.getElementById('work-exp-div').removeAttribute("hidden", "false");
+      }
+
+      function show_lang(){
+        document.getElementById('lang-div').removeAttribute("hidden", "true");
+      }
+      function hide_lang(){
+        document.getElementById('lang-div').setAttribute("hidden", "true");
+      } 
+
+      function show_tech(){
+        document.getElementById('tech-div').removeAttribute("hidden", "true");
+      }
+      function hide_tech(){
+        document.getElementById('tech-div').setAttribute("hidden", "true");
+      }
+
+      rsrno=0;
+      function addref(){
+        if(rsrno<0){
+          rsrno = 0;
+        }
+        else if(rsrno>=5){
+          return 0;
+        }
+        rsrno++;
+        document.getElementById('ref-row').innerHTML +=
+                      `<div id="ref-row-${rsrno}">
+                        <label for="ref-name">
+                          {{r.name.label}}{{r.name}}
+                        </label>
+                        <label for="ref-num">
+                          {{r.phone_number.label}}{{r.phone_number}}
+                        </label>
+                        <label for="ref-rel">
+                          {{r.relation.label}}{{r.relation}}
+                        </label>
+                      </div>`;
+      }
+      function remref(){
+        if(rsrno>=1){
+          toDeleteNode = document.getElementById(`ref-row-${rsrno}`);
+          parentNode = document.getElementById('ref-row');
+          parentNode.removeChild(toDeleteNode);
+        }
+        rsrno--;
+      }
+      function show_ref(){
+        document.getElementById('ref-div').removeAttribute("hidden");
+      }
+      function hide_ref(){
+        document.getElementById('ref-div').setAttribute("hidden", "true");
+      }
+
+      function show_pref(){
+        document.getElementById('pref-div').removeAttribute("hidden", "true");
+      }
+      function hide_pref(){
+        document.getElementById('pref-div').setAttribute("hidden", "true");
+      }
+    </script>
+  
   </body>
 </html>

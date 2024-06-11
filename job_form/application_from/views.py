@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from .form import *
+from .models import Language, Technology, PreferedLocation
 
 # Create your views here.
 language = LanguageForm()
@@ -9,9 +10,6 @@ gender = GenderForm()
 prefered_location = PreferedLocationForm()
 designation = DesignationForm()
 department = DepartmentForm()
-state = StateForm()
-city = CityForm()
-course = CourseForm()
 basic_detail = BasicDetailForm()
 education_detail = EducationDetailForm()
 experience_detail = ExperienceDetailForm()
@@ -24,27 +22,23 @@ preference = PreferenceForm()
 
 
 context = {
-    'a': language,
-    'b': technology,
-    'c': relation_status,
-    'd': gender,
-    'e': prefered_location,
-    'f': designation,
-    'g': department,
-    'h': state,
-    'i': city,
-    'j': course,
     'k': basic_detail,
     'l': education_detail,
-    'm': experience_detail,
+    'exper': experience_detail,
+    'languages': Language.objects.all(),
+    'techs': Technology.objects.all(),
     'n': language_detail,
-    'o': language_option,
     'p': tech_detail,
-    'q': tech_option,
     'r': reference,
+    'pref_loc': PreferedLocation.objects.all(),
     's': preference
 }
 
 
 def create_form(request):
     return render(request, 'form.html', context)
+
+
+def show_form_data(request):
+    if request.method == "POST":
+        pass
